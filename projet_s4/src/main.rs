@@ -7,15 +7,15 @@ use process_path;
 use std::path::PathBuf;
 
 fn main() {
-    let srcpath = process_path::get_executable_path();
+    let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
+                                                       //l'executable
     let mut pathvalid = PathBuf::new();
     match srcpath {
         None => println!("The process path could not be determined"),
         Some(mut p) => { p.pop(); p.pop(); p.pop(); p.pop(); pathvalid = p;}
-    }
-    pathvalid.push("data/lfw/Alicia_Witt/Alicia_Witt_0001.jpg");
-    let path = pathvalid.to_str().unwrap();
-    println!("{}", path);
+    }   //test si srcpath est bien valide et revient au niveau du dossier projet_s4_revenant
+    pathvalid.push("data/lfw/Alicia_Witt/Alicia_Witt_0001.jpg"); //ajouter le path pour trouver
+                                                                 //l'image
     let image = redim(&path);
     let image_filtre = filtrage(&image);
     /*
