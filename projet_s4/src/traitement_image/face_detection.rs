@@ -3,7 +3,7 @@ use super::convert_to_grey::*;
 use ndarray::*;
 use ndarray_linalg::*;
 use ndarray_linalg::error::LinalgError;
-pub fn conv_mat(images:Vec<DynamicImage>)->Array2<f64>
+pub fn conv_mat(images:Vec<DynamicImage>) //->Array2<f64>
 {
     let mut data:Vec<Array2<f64>> = Vec::new();
     let (width,height)=images[0].dimensions();
@@ -36,4 +36,3 @@ fn compute_eigen(matrix: Array2<f64>) -> Result<(Array<f64, Axis>, Array2<f64>),
 
     Ok((eigenvalues, eigenvectors))
 }
-
