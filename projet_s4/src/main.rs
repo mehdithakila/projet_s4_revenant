@@ -7,7 +7,7 @@ use process_path;
 use std::path::PathBuf;
 
 fn main() {
-    let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
+    /*let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
                                                        //l'executable
     let mut pathvalid = PathBuf::new();
     match srcpath {
@@ -29,4 +29,4 @@ fn main() {
         println!("{}", false);
     }
     */
-}
+*/}
