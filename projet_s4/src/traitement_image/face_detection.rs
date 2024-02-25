@@ -6,8 +6,15 @@ use ndarray_linalg::error::LinalgError;
 use ndarray::ArrayBase;
 use ndarray::OwnedRepr;
 use ndarray::{Array3};
+use super::redim::*;
 pub fn conv_mat(images:Vec<DynamicImage>)->Array2<f64>
 {
+    /*let images=Vec::new();
+    for path in path_images
+    {
+        let img=redim(&path);
+        images.push(img);
+    }*/
     let mut data:Vec<Array2<f64>> = Vec::new();
     let (width,height)=images[0].dimensions();
     let l=images.len();

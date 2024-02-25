@@ -2,6 +2,7 @@ mod traitement_image;
 use traitement_image::redim::redim;
 use traitement_image::filtrage::*;
 use traitement_image::convert_to_grey::*;
+use traitement_image::dataset::*;
 use image::*;
 use process_path;
 use std::path::PathBuf;
