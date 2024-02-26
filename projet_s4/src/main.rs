@@ -5,8 +5,9 @@ use traitement_image::convert_to_grey::*;
 use image::*;
 use process_path;
 use std::path::PathBuf;
+slint::include_modules!();
 
-fn main() {
+fn main() -> Result<(), slint::PlatformError> {
     let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
                                                        //l'executable
     let mut pathvalid = PathBuf::new();  
@@ -34,4 +35,9 @@ fn main() {
     else{
         println!("{}", false);
     }
+
+
+    let app = AppWindow::new()?;
+    app.run()
+
 }

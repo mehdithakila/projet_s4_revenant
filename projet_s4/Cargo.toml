@@ -2,7 +2,7 @@
 name = "projet_s4"
 version = "0.1.0"
 edition = "2021"
-
+build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -11,4 +11,7 @@ image="0.23.14"
 ndarray="0.15.4"
 ndarray-linalg="0.16.0"
 ndarray-stats = "0.5.1"
+slint = "1.4"
 
+[build-dependencies]
+slint-build = "1.4"
