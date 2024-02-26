@@ -8,13 +8,10 @@ pub fn test_images(required_no:usize, path:&str)-> (Vec<DynamicImage>,Vec<Dynami
     let entries=fs::read_dir(path).unwrap();
     //images for training
     let mut images_path_for_training=Vec::new();
-    let mut labels_for_training=Vec::new();
     let mut no_of_images_for_training=Vec::new();
     //images for testing
     let mut images_path_for_testing=Vec::new();
-    let mut labels_for_testing=Vec::new();
     let mut no_of_images_for_testing=Vec::new();
-    let mut images_target=Vec::new();
     let mut per_no=0;
     for entry in entries
     {
@@ -37,7 +34,6 @@ pub fn test_images(required_no:usize, path:&str)-> (Vec<DynamicImage>,Vec<Dynami
                         if i<required_no
                         {
                             images_path_for_training.push(img.clone());
-                            labels_for_training.push(per_no);
                             if no_of_images_for_training.len()>per_no
                             {
                                 no_of_images_for_training[per_no]+=1;
@@ -46,16 +42,12 @@ pub fn test_images(required_no:usize, path:&str)-> (Vec<DynamicImage>,Vec<Dynami
                             {
                                 no_of_images_for_training.push(1);;
                             }
-                            if i==0
-                            {
-                                images_target.push(entry_path.clone());
-                            }
+                            
                         }
                         else
                         {
                             
                             images_path_for_testing.push(img);
-                            labels_for_testing.push(per_no);
                             
                             if no_of_images_for_testing.len()>per_no
                             {

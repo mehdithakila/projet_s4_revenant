@@ -3,12 +3,13 @@ use traitement_image::redim::redim;
 use traitement_image::filtrage::*;
 use traitement_image::convert_to_grey::*;
 use traitement_image::dataset::*;
+use traitement_image::face_detection1::*;
 use image::*;
 use process_path;
 use std::path::PathBuf;
 
 fn main() {
-    let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
+    /*let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
                                                        //l'executable
     let mut pathvalid = PathBuf::new();  
     match srcpath {
@@ -34,5 +35,13 @@ fn main() {
     }
     else{
         println!("{}", false);
-    }
+    }*/
+    let path ="Alicia_Witt_0001.jpg";
+    let img=redim(path);
+    
+    let m=dynamic_image_to_gray_array(&img);
+    //let a =pca(&m,1);
+    dbg!(m);
+
+
 }
