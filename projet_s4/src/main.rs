@@ -7,8 +7,9 @@ use traitement_image::face_detection1::*;
 use image::*;
 use process_path;
 use std::path::PathBuf;
+slint::include_modules!();
 
-fn main() {
+fn main() -> Result<(), slint::PlatformError> {
     /*let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
                                                        //l'executable
     let mut pathvalid = PathBuf::new();  
@@ -42,6 +43,9 @@ fn main() {
     let m=dynamic_image_to_gray_array(&img);
     //let a =pca(&m,1);
     dbg!(m);
+
+    let app = AppWindow::new()?;
+    app.run()
 
 
 }
