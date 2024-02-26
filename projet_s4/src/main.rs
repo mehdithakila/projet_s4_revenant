@@ -10,7 +10,7 @@ use std::path::PathBuf;
 slint::include_modules!();
 
 fn main() -> Result<(), slint::PlatformError> {
-    /*let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
+    let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
                                                        //l'executable
     let mut pathvalid = PathBuf::new();  
     match srcpath {
@@ -21,7 +21,7 @@ fn main() -> Result<(), slint::PlatformError> {
         //fichiers qu'on veut recupere ou enregistre. (il suffit de creer une nouvelle variable et
         //push le path a partir du dossier projet_s4_revenant)
     let mut path_image : String = pathvalid.to_str().unwrap().to_string();
-    path_image.push_str("/data/lfw/Alicia_Witt/Alicia_Witt_0001.jpg"); //ajouter le path pour trouver
+    path_image.push_str("/data/lfw/test_bruit/Medianfilterp.png"); //ajouter le path pour trouver
                                                                        //l'image
     let path = path_image;
 
@@ -36,7 +36,8 @@ fn main() -> Result<(), slint::PlatformError> {
     }
     else{
         println!("{}", false);
-    }*/
+    }
+    /*
     let path ="Alicia_Witt_0001.jpg";
     let img=redim(path);
     
@@ -47,5 +48,5 @@ fn main() -> Result<(), slint::PlatformError> {
     let app = AppWindow::new()?;
     app.run()
 
-
+*/
 }
