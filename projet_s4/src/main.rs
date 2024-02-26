@@ -44,9 +44,8 @@ fn main() -> Result<(), slint::PlatformError> {
     let m=dynamic_image_to_gray_array(&img);
     //let a =pca(&m,1);
     dbg!(m);
-
+*/
     let app = AppWindow::new()?;
     app.run()
 
-*/
 }
