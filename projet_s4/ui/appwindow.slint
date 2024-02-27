@@ -1,21 +1,31 @@
-import { Button, VerticalBox } from "std-widgets.slint";
+import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
     height: 600px;
     width: 800px;
     title: "Face recognition";
+    background: grey;
+    callback click();
     VerticalBox {
-        y: 0px;
+        y: 80px;
         height: 10%;
+        width: parent.width / 2;
         Text {
             text: "Welcome to the face recognition application interface";
             
         }
+        LineEdit {
+        font-size: 14px;
+        width: parent.width;
+        height: 20px;
+        placeholder-text: "Enter a file path";
+    }
         Button {
-            text: "Begin";
+            text: "Load";
             clicked => {
-                ;
+                root.click();
             }
         }
     }
+    
 }
