@@ -6,6 +6,7 @@ pub fn test_images(required_no:usize, path:&str)-> (Vec<DynamicImage>,Vec<Dynami
 
 {
     let entries=fs::read_dir(path).unwrap();
+    println!("no problem");
     //images for training
     let mut images_path_for_training=Vec::new();
     let mut no_of_images_for_training=Vec::new();
