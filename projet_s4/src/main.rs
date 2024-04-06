@@ -4,14 +4,14 @@ use traitement_image::filtrage::*;
 use traitement_image::convert_to_grey::*;
 use traitement_image::dataset::*;
 use traitement_image::face_detection1::*;
+use traitement_image::detect::*;
 use image::*;
 use process_path;
 use std::path::PathBuf;
-slint::include_modules!();
 use std::fs::File;
 use std::io::{self, Write};
 use ndarray::Array2;
-
+use slint_ui::{Ui, UiBuilder, UiResult};
 fn main() -> Result<(), slint::PlatformError> {
     let srcpath = process_path::get_executable_path(); //recuperation dynamique du path ou se trouve
                                                        //l'executable
@@ -64,19 +64,24 @@ fn main() -> Result<(), slint::PlatformError> {
         writeln!(file).expect("Impossible d'écrire dans le fichier");
     }
 */
-    let path1="../../../images/ORL/";
     
-    let (images_for_training,images_for_testing)=test_images(8,&path1);
-    calculate_covariance_matrix(&images_for_training);
-    let app = AppWindow::new()?;
+    let mut ui = UiBuilder::new().build();
+    let button_id = ui.new_id();
+    let mut run_detection = false;
 
-    app.on_click({
-        let app_handle = app.as_weak();
-        move || {
-            let app = app_handle.unwrap();
-            dbg!("loading image");
+    ui.window("Face Detection", [800.0, 600.0], || {
+        ui.button("Detect Faces").id(button_id).on_clicked(|| {
+            run_detection = true;
+        });
+
+        if run_detection {
+            match detect() {
+                Ok(_) => println!("Face detection completed."),
+                Err(err) => eprintln!("Error during face detection: {}", err),
+            }
+            run_detection = false;
         }
     });
-    app.run()
 
+    Ok(())    
 }

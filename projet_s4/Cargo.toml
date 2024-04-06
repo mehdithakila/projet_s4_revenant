@@ -12,6 +12,6 @@ image="0.23.14"
 ndarray="*"
 ndarray-stats="*"
 slint = "1.4"
-
+opencv= "0.60.0"
 [build-dependencies]
 slint-build = "1.4"
