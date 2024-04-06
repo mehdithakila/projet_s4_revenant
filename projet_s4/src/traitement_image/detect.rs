@@ -15,7 +15,8 @@ pub fn detect()->Result<()>{
     //Haarcascade for eye detection
     //let xml = "/usr/local/share/opencv4/haarcascades/haarcascade_eye.xml";
     //Haarcascade for face detection
-    let xml = "/usr/local/share/opencv4/haarcascades/haarcascade_frontalface_default.xml";  
+    //let xml = "/usr/local/share/opencv4/haarcascades/haarcascade_frontalface_default.xml";
+    let xml ="haarcascade_frontalface_default.xml";
     let mut face_detector = objdetect::CascadeClassifier::new(xml)?;
     let mut img = Mat::default();
     loop{
