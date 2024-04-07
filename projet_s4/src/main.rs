@@ -5,6 +5,7 @@ use traitement_image::convert_to_grey::*;
 use traitement_image::dataset::*;
 use traitement_image::face_detection1::*;
 use traitement_image::detect::*;
+use traitement_image::detect_image::*;
 use image::*;
 use process_path;
 use std::path::PathBuf;
@@ -17,12 +18,13 @@ use opencv::{
     prelude::*,
     objdetect,
     highgui,
-    imgproc,
-    core,
+    imgproc::*,
+    core::*,
     types,
     videoio,
+    imgcodecs,
 };
-fn main() -> Result<(), slint::PlatformError>{
+fn main()->Result<(),slint::PlatformError> {
    
     let app = AppWindow::new()?;
 
@@ -35,4 +37,4 @@ fn main() -> Result<(), slint::PlatformError>{
     });
     app.run(); 
     Ok(())
-}
+} 
