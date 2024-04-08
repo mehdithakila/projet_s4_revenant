@@ -33,6 +33,7 @@ fn main()->Result<(),slint::PlatformError> {
         move || {
             let app = app_handle.unwrap();
             detect();
+
         }
     });
     app.run(); 
