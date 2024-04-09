@@ -3,8 +3,9 @@ import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
     in-out property <string> input;
-    height: 600px;
-    width: 800px;
+    in property <image> picture_source <=> picture.source;
+    height: 900px;
+    width: 1200px;
     title: "Face recognition";
     background: grey;
     callback click();
@@ -37,5 +38,11 @@ export component AppWindow inherits Window {
 		root.camera();
             }
         }
+        picture_rect := Rectangle {
+            
+            picture:=Image { }
+        }
     }
+    
+    
 }

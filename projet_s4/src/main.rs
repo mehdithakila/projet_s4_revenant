@@ -1,5 +1,7 @@
 mod traitement_image;
 use slint::Image;
+use slint::SharedPixelBuffer;
+use slint::Rgba8Pixel;
 use std::path::Path;
 use traitement_image::redim::redim;
 use traitement_image::filtrage::*;
@@ -41,7 +43,12 @@ fn main()->Result<(),slint::PlatformError> {
         move || {
             let app = app_handle.unwrap();
             dbg!("{}",String::from(app.get_input()));
-            let image = Image::load_from_path(Path::new(&(app.get_input()).to_string()));
+            //let image = Image::load_from_path(Path::new(&(app.get_input()).to_string()));
+            let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+            let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                image.as_raw(), image.width(), image.height());
+            let new = Image::from_rgba8(pixel_buffer);
+            app.set_picture_source(new);
         }
     });
     app.on_input_changed({
