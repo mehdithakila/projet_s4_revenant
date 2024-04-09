@@ -43,7 +43,6 @@ fn main()->Result<(),slint::PlatformError> {
         move || {
             let app = app_handle.unwrap();
             dbg!("{}",String::from(app.get_input()));
-            //let image = Image::load_from_path(Path::new(&(app.get_input()).to_string()));
             let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
             let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
                 image.as_raw(), image.width(), image.height());
@@ -57,6 +56,34 @@ fn main()->Result<(),slint::PlatformError> {
             let app = app_handle.unwrap();
             app.set_input(input);
         }
+    });
+    app.on_apply_gs({
+        let app_handle = app.as_weak();
+        move || {
+            let app = app_handle.unwrap();
+            let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+            let mut dynimage = DynamicImage::ImageRgba8(image);
+            dynimage = convert_to_grey(&dynimage);
+            image = dynimage.to_rgba8();
+            let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                image.as_raw(), image.width(), image.height());
+            let new = Image::from_rgba8(pixel_buffer);
+            app.set_picture_source(new);
+        }
+    });
+    app.on_apply_filter({
+        let app_handle = app.as_weak();
+        move || {
+            let app = app_handle.unwrap();
+            let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+            let mut dynimage = DynamicImage::ImageRgba8(image);
+            dynimage = filtrage(&dynimage);
+            image = dynimage.to_rgba8();
+            let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                image.as_raw(), image.width(), image.height());
+            let new = Image::from_rgba8(pixel_buffer);
+            app.set_picture_source(new);
+        }   
     });
     app.run(); 
     Ok(())

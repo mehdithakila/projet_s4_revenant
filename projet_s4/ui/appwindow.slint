@@ -3,7 +3,7 @@ import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
     in-out property <string> input;
-    in property <image> picture_source <=> picture.source;
+    in-out property <image> picture_source <=> picture.source;
     height: 900px;
     width: 1200px;
     title: "Face recognition";
@@ -11,6 +11,8 @@ export component AppWindow inherits Window {
     callback click();
     callback camera();
     callback input_changed(string);
+    callback apply_gs();
+    callback apply_filter();
     VerticalBox {
         y: 80px;
         height: 10%;
@@ -30,6 +32,18 @@ export component AppWindow inherits Window {
             text: "Load file";
             clicked => {
 		root.click();
+            }
+        }
+        Button {
+            text: "Load greyscale";
+            clicked => {
+		root.apply_gs();
+            }
+        }
+        Button {
+            text: "Load filtered";
+            clicked => {
+		root.apply_filter();
             }
         }
         Button {
