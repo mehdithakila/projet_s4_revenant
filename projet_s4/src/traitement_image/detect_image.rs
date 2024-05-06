@@ -12,7 +12,7 @@ use opencv::{
 use image::*;
 pub fn detect_image()
 {
-    let mut image = imgcodecs::imread("Alicia_Witt_0001.jpg", opencv::imgcodecs::IMREAD_COLOR).unwrap();
+    let mut image = imgcodecs::imread("/home/loic/epita/S4/Projet/projet_s4_revenant/projet_s4/src/Alicia_Witt_0001.jpg", opencv::imgcodecs::IMREAD_COLOR).unwrap();
 
     // Check if the image is loaded successfully
     if image.size().unwrap().width == 0 || image.size().unwrap().height == 0 {

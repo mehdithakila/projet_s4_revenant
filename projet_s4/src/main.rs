@@ -85,6 +85,13 @@ fn main()->Result<(),slint::PlatformError> {
             app.set_picture_source(new);
         }   
     });
+    app.on_detect({
+        let app_handle = app.as_weak();
+        move || {
+            let app = app_handle.unwrap();
+            detect_image();
+        }
+    });
     app.run(); 
     Ok(())
 } 
