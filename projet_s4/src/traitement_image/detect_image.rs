@@ -10,9 +10,9 @@ use opencv::{
     imgcodecs,
 };
 use image::*;
-pub fn detect_image()
+pub fn detect_image(path :&str) -> Result<()>
 {
-    let mut image = imgcodecs::imread("/home/loic/epita/S4/Projet/projet_s4_revenant/projet_s4/src/Alicia_Witt_0001.jpg", opencv::imgcodecs::IMREAD_COLOR).unwrap();
+    let mut image = imgcodecs::imread(path, opencv::imgcodecs::IMREAD_COLOR)?;
 
     // Check if the image is loaded successfully
     if image.size().unwrap().width == 0 || image.size().unwrap().height == 0 {
@@ -36,4 +36,5 @@ pub fn detect_image()
     // Display the image with detected faces
     highgui::imshow("Face Detection", &image).unwrap();
     highgui::wait_key(0).unwrap();
+    Ok(())
 }
