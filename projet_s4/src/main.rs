@@ -57,6 +57,30 @@ fn find_face_in_db(features: &[u8]) -> Result<Option<String>> {
     Ok(None)
 }
 
+fn extract_feature(path : &str) -> Result<Vec<u8>, Box<dyn std::error::Error>>{
+    create_db()?;
+
+    let cascade_path = "/usr/share/opencv4/haarcascades/haarcascade_frontalface_alt.xml";
+    let face_image = "./Alicia_Witt_0001.jpg";
+
+    let faces = detect_faces(face_image, cascade_path)?;
+    if faces.is_empty() {
+        println!("No faces detected");
+        return Ok(Vec::new());
+    }
+
+    let face_rect = faces[0]; // Pour simplifier, on prend le premier visage détecté
+    let features = extract_face_features(face_image, face_rect)?;
+    Ok(features.clone())
+}
+
+fn in_db(features: &[u8]) -> Result<bool>{
+    match find_face_in_db(&features.clone())? {
+        Some(name) => Ok(true),
+        None => Ok(false),
+    }
+}
+
 
 fn main()->Result<(),slint::PlatformError> {
     let app = AppWindow::new()?;
@@ -130,7 +154,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     create_db()?;
 
     let cascade_path = "/usr/share/opencv4/haarcascades/haarcascade_frontalface_alt.xml";
-    let face_image = "/home/loic/epita/S4/Projet/projet_s4_revenant/projet_s4/src/Alicia_Witt_0001.jpg";
+    let face_image = "./Alicia_Witt_0001.jpg";
 
     let faces = detect_faces(face_image, cascade_path)?;
     if faces.is_empty() {
