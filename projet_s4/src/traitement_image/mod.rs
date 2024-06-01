@@ -8,3 +8,4 @@ pub mod detect;
 pub mod detect_image;
 pub mod detect_extract_image;
 pub mod data_base;
+pub mod detect_extract_webcam;

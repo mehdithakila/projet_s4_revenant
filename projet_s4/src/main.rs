@@ -13,6 +13,7 @@ use traitement_image::detect::*;
 use traitement_image::detect_image::*;
 use traitement_image::detect_extract_image::*;
 use traitement_image::data_base::*;
+use traitement_image::detect_extract_webcam::*;
 use rusqlite::{params, Connection, Result};
 use image::*;
 use process_path;
@@ -32,11 +33,13 @@ use opencv::{
     imgcodecs,
 };
 
-fn compare_faces(features1: &[u8], features2: &[u8]) -> f64 {
-    let dist = features1.iter().zip(features2.iter())
-                        .map(|(a, b)| (a - b).pow(2))
-                        .sum::<u8>() as f64;
-    dist.sqrt()
+/*fn compare_faces(features1: &[u8], features2: &[u8]) -> f64 {
+
+    let dist_squared: f64 = features1.iter().zip(features2.iter())
+                        .map(|(&a, &b)| (a as f64 - b as f64).powi(2))
+                        .sum();
+    let dist = dist_squared.sqrt();
+    dist
 }
 
 fn find_face_in_db(features: &[u8]) -> Result<Option<String>> {
@@ -47,7 +50,7 @@ fn find_face_in_db(features: &[u8]) -> Result<Option<String>> {
         let features: Vec<u8> = row.get(1)?;
         Ok((name, features))
     })?;
-
+    println!("not here");
     for face in face_iter {
         let (name, db_features) = face?;
         if compare_faces(features, &db_features) < 50.0 { // seuil de similarité
@@ -80,9 +83,9 @@ fn in_db(features: &[u8]) -> Result<bool>{
         None => Ok(false),
     }
 }
+*/
 
-
-fn main()->Result<(),slint::PlatformError> {
+/*fn main()->Result<(),slint::PlatformError> {
     let app = AppWindow::new()?;
     app.on_camera({
         let app_handle = app.as_weak();
@@ -148,15 +151,16 @@ fn main()->Result<(),slint::PlatformError> {
     });
     app.run(); 
     Ok(())
-}
-/*
+}*/
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    create_db()?;
+  /*  create_db()?;
 
     let cascade_path = "/usr/share/opencv4/haarcascades/haarcascade_frontalface_alt.xml";
-    let face_image = "./Alicia_Witt_0001.jpg";
+    let face_image = "./mehdi_tlaghi.jpg";
 
     let faces = detect_faces(face_image, cascade_path)?;
+    println!("not detect_faces");
     if faces.is_empty() {
         println!("No faces detected");
         return Ok(());
@@ -164,16 +168,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let face_rect = faces[0]; // Pour simplifier, on prend le premier visage détecté
     let features = extract_face_features(face_image, face_rect)?;
-    
+    println!("not extract");
     match find_face_in_db(&features.clone())? {
         Some(name) => println!("Le visage est reconnu : {}", name),
         None => {
             println!("Le visage n'est pas dans la base de données");
             // Sauvegarder le visage avec un nom arbitraire
-            save_face("Alicia witt", features.clone())?;
+            save_face("mehdi tlaghi", features.clone())?;
         }
     }
+    */
+    let _ =extract_webcam();
     
     Ok(())
 }
-*/
+
