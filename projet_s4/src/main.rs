@@ -61,7 +61,7 @@ fn extract_feature(path : &str) -> Result<Vec<u8>, Box<dyn std::error::Error>>{
     create_db()?;
 
     let cascade_path = "/usr/share/opencv4/haarcascades/haarcascade_frontalface_alt.xml";
-    let face_image = "./Alicia_Witt_0001.jpg";
+    let face_image = path;
 
     let faces = detect_faces(face_image, cascade_path)?;
     if faces.is_empty() {
