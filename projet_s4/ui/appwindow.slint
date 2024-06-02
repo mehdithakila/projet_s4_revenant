@@ -1,19 +1,22 @@
 import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
 
-
 export component AppWindow inherits Window {
     in-out property <string> input;
+    in-out property <string> save;
     in-out property <image> picture_source <=> picture.source;
+    in-out property <bool> viewable;
     height: 900px;
     width: 1200px;
     title: "Face recognition";
     background: grey;
-    callback click();
+    callback load();
     callback camera();
     callback input_changed(string);
+    callback save_changed(string);
     callback apply_gs();
     callback apply_filter();
     callback detect();
+    callback add_to_db();
     VerticalBox {
         y: 80px;
         height: 10%;
@@ -26,13 +29,29 @@ export component AppWindow inherits Window {
 	font-size: 14px;
 	width: parent.width;
 	height: 20px;
-	placeholder-text: "Enter a file path";
+	placeholder-text: "Please enter a valid path";
     edited => {input_changed(input.text);}
 	}
+    VerticalBox {
+        width: 200px;
+        height: 60px;
+        visible: viewable;
+        Text {
+            text: "File not found";
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+
+        Button {
+            text: "OK";
+            clicked => {viewable = false; }
+
+        }
+    }
         Button {
             text: "Load file";
             clicked => {
-		root.click();
+		root.load();
             }
         }
         Button {
@@ -47,12 +66,25 @@ export component AppWindow inherits Window {
 		root.apply_filter();
             }
         }
-	Button {
+	    Button {
             text: "Load detection";
             clicked => {
                 root.detect();
             }
-}
+        }
+        save := LineEdit {
+            font-size: 14px;
+            width: parent.width;
+            height: 20px;
+            placeholder-text: "Please enter a save name";
+            edited => {save_changed(save.text);}
+            }
+        Button {
+            text:"Save file";
+            clicked => {
+                root.add_to_db();
+            }
+        }
 	
         Button {
             text: "Enable camera";
@@ -63,7 +95,7 @@ export component AppWindow inherits Window {
         
     }
     VerticalBox {
-	    y: 100px;
+	    y: 180px;
 	    picture_rect := Rectangle {
 	    picture:=Image{}
 	}

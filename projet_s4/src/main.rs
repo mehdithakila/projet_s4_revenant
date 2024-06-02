@@ -33,7 +33,7 @@ use opencv::{
     imgcodecs,
 };
 
-/*fn compare_faces(features1: &[u8], features2: &[u8]) -> f64 {
+fn compare_faces(features1: &[u8], features2: &[u8]) -> f64 {
 
     let dist_squared: f64 = features1.iter().zip(features2.iter())
                         .map(|(&a, &b)| (a as f64 - b as f64).powi(2))
@@ -83,10 +83,12 @@ fn in_db(features: &[u8]) -> Result<bool>{
         None => Ok(false),
     }
 }
-*/
 
-/*fn main()->Result<(),slint::PlatformError> {
+/* */
+fn main()->Result<(),slint::PlatformError> {
+    create_db();
     let app = AppWindow::new()?;
+    app.set_viewable(false);
     app.on_camera({
         let app_handle = app.as_weak();
         move || {
@@ -95,16 +97,18 @@ fn in_db(features: &[u8]) -> Result<bool>{
 
         }
     });
-    app.on_click({
+    app.on_load({
         let app_handle = app.as_weak();
         move || {
             let app = app_handle.unwrap();
-            dbg!("{}",String::from(app.get_input()));
-            let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
-            let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
-                image.as_raw(), image.width(), image.height());
-            let new = Image::from_rgba8(pixel_buffer);
-            app.set_picture_source(new);
+            if Path::new(&(app.get_input()).to_string()).exists() {
+                let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+                let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                    image.as_raw(), image.width(), image.height());
+                let new = Image::from_rgba8(pixel_buffer);
+                app.set_picture_source(new);
+            }
+            else {app.set_viewable(true);}
         }
     });
     app.on_input_changed({
@@ -114,45 +118,97 @@ fn in_db(features: &[u8]) -> Result<bool>{
             app.set_input(input);
         }
     });
+    app.on_save_changed({
+        let app_handle = app.as_weak();
+        move |save| {
+            let app = app_handle.unwrap();
+            app.set_save(save);
+        }
+    });
     app.on_apply_gs({
         let app_handle = app.as_weak();
         move || {
             let app = app_handle.unwrap();
-            let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
-            let mut dynimage = DynamicImage::ImageRgba8(image);
-            dynimage = convert_to_grey(&dynimage);
-            image = dynimage.to_rgba8();
-            let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
-                image.as_raw(), image.width(), image.height());
-            let new = Image::from_rgba8(pixel_buffer);
-            app.set_picture_source(new);
+            if Path::new(&(app.get_input()).to_string()).exists() {
+                let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+                let mut dynimage = DynamicImage::ImageRgba8(image);
+                dynimage = convert_to_grey(&dynimage);
+                image = dynimage.to_rgba8();
+                let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                    image.as_raw(), image.width(), image.height());
+                let new = Image::from_rgba8(pixel_buffer);
+                app.set_picture_source(new);
+            }
+            else {app.set_viewable(true);}
         }
     });
     app.on_apply_filter({
         let app_handle = app.as_weak();
         move || {
             let app = app_handle.unwrap();
-            let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
-            let mut dynimage = DynamicImage::ImageRgba8(image);
-            dynimage = filtrage(&dynimage);
-            image = dynimage.to_rgba8();
-            let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
-                image.as_raw(), image.width(), image.height());
-            let new = Image::from_rgba8(pixel_buffer);
-            app.set_picture_source(new);
+            if Path::new(&(app.get_input()).to_string()).exists() {
+                let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+                let mut dynimage = DynamicImage::ImageRgba8(image);
+                dynimage = filtrage(&dynimage);
+                image = dynimage.to_rgba8();
+                let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                    image.as_raw(), image.width(), image.height());
+                let new = Image::from_rgba8(pixel_buffer);
+                app.set_picture_source(new);
+            }
+            else {app.set_viewable(true);}
         }   
     });
     app.on_detect({
         let app_handle = app.as_weak();
         move || {
             let app = app_handle.unwrap();
-            detect_image();
+            if Path::new(&(app.get_input()).to_string()).exists() {
+                let _ = detect_image(&(app.get_input()));
+            }
+            else {app.set_viewable(true);}
+        }
+    });
+    app.on_add_to_db({
+        let app_handle = app.as_weak();
+        move || {
+            let app = app_handle.unwrap();
+            if Path::new(&(app.get_input()).to_string()).exists() {
+                let mut image = image::open(Path::new(&(app.get_input()).to_string())).expect("Error loading image").into_rgba8();
+                let mut dynimage = DynamicImage::ImageRgba8(image);
+                dynimage = filtrage(&dynimage);
+                image = dynimage.to_rgba8();
+                let mut pixel_buffer = SharedPixelBuffer::<Rgba8Pixel>::clone_from_slice(
+                    image.as_raw(), image.width(), image.height());
+                let new = Image::from_rgba8(pixel_buffer);
+                app.set_picture_source(new);
+                let cascade_path = "/usr/share/opencv4/haarcascades/haarcascade_frontalface_alt.xml";
+                let image_path = &app.get_input();
+                let faces = detect_faces(image_path,cascade_path).expect("Not found");
+                if faces.is_empty() {
+                    println!("No faces detected");
+                }
+                else {
+                    let face_rect = faces[0];
+                    let features = extract_face_features(image_path, face_rect).expect("Not found");
+                    match find_face_in_db(&features.clone()).expect("Not found") {
+                        Some(name) => println!("Le visage est reconnu : {}", name),
+                        None => {
+                            println!("Le visage n'est pas dans la base de données");
+                            // Sauvegarder le visage avec un nom arbitraire
+                            save_face(&app.get_save(), features.clone());
+                        }
+                    }
+                    
+                }
+            }
+            else {app.set_viewable(true);}
         }
     });
     app.run(); 
     Ok(())
-}*/
-
+}
+/* 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
   /*  create_db()?;
 
@@ -181,5 +237,5 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _ =extract_webcam();
     
     Ok(())
-}
+}*/
 
