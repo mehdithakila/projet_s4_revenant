@@ -5,7 +5,7 @@ export component AppWindow inherits Window {
     in-out property <string> save;
     in-out property <image> picture_source <=> picture.source;
     in-out property <bool> viewable;
-    height: 900px;
+    height: 1000px;
     width: 1200px;
     title: "Face recognition";
     background: grey;
@@ -95,7 +95,7 @@ export component AppWindow inherits Window {
         
     }
     VerticalBox {
-	    y: 180px;
+	    y: 280px;
 	    picture_rect := Rectangle {
 	    picture:=Image{}
 	}
