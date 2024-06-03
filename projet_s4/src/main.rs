@@ -93,7 +93,7 @@ fn main()->Result<(),slint::PlatformError> {
         let app_handle = app.as_weak();
         move || {
             let app = app_handle.unwrap();
-            detect();
+            let _ =extract_webcam();
 
         }
     });

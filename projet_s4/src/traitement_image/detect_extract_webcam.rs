@@ -122,7 +122,7 @@ pub fn extract_webcam()->Result<(),MyError>{
             core::Size::new(10, 10),
             core::Size::new(0, 0)
         )?;
-        println!("{:?}", faces);
+        //println!("{:?}", faces);
         if faces.len() > 0{
             for face in faces.iter(){
                 imgproc::rectangle(
@@ -152,7 +152,10 @@ pub fn extract_webcam()->Result<(),MyError>{
         
 
         highgui::imshow("gray", &img)?;
-        highgui::wait_key(1)?;
+        let test = highgui::wait_key(1)?;
+        if test == 32 {
+            let _ = highgui::destroy_all_windows();
+            break;}
 
     }
     Ok(())
