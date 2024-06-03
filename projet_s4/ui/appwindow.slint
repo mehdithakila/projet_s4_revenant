@@ -5,7 +5,10 @@ export component AppWindow inherits Window {
     in-out property <string> save;
     in-out property <image> picture_source <=> picture.source;
     in-out property <bool> viewable;
-    height: 1000px;
+    in-out property <bool> viewable2;
+    in-out property <string> feedback;
+    
+    height: 1050px;
     width: 1200px;
     title: "Face recognition";
     background: grey;
@@ -85,7 +88,22 @@ export component AppWindow inherits Window {
                 root.add_to_db();
             }
         }
-	
+        VerticalBox {
+            width: 600px;
+            height: 60px;
+            visible: viewable2;
+            Text {
+                text: feedback;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+    
+            Button {
+                text: "OK";
+                clicked => {viewable2 = false; }
+    
+            }
+        }
         Button {
             text: "Enable camera";
             clicked => {
@@ -95,7 +113,7 @@ export component AppWindow inherits Window {
         
     }
     VerticalBox {
-	    y: 280px;
+	    y: 320px;
 	    picture_rect := Rectangle {
 	    picture:=Image{}
 	}

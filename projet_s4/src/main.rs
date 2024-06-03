@@ -86,7 +86,7 @@ fn in_db(features: &[u8]) -> Result<bool>{
 
 /* */
 fn main()->Result<(),slint::PlatformError> {
-    create_db();
+    let _ = create_db();
     let app = AppWindow::new()?;
     app.set_viewable(false);
     app.on_camera({
@@ -192,15 +192,20 @@ fn main()->Result<(),slint::PlatformError> {
                     let face_rect = faces[0];
                     let features = extract_face_features(image_path, face_rect).expect("Not found");
                     match find_face_in_db(&features.clone()).expect("Not found") {
-                        Some(name) => println!("Le visage est reconnu : {}", name),
+                        Some(name) => {
+                            app.set_feedback(format!("This face was already in the database as {}",name).into());
+                            //println!("Le visage est reconnu : {}", name)
+                    },
                         None => {
-                            println!("Le visage n'est pas dans la base de données");
+                            //println!("Le visage n'est pas dans la base de données");
+                            app.set_feedback("This face was not in the database and was saved".into());
                             // Sauvegarder le visage avec un nom arbitraire
                             save_face(&app.get_save(), features.clone());
                         }
                     }
                     
                 }
+                app.set_viewable2(true);
             }
             else {app.set_viewable(true);}
         }
